@@ -50,6 +50,9 @@ class TodosListCtrl {
 			username: Meteor.user().username
 		});
 
+		// Insert a task into the collection
+		Meteor.call('tasks.insert', newTask);
+
 		// Clear form
 		this.newTask = '';
 	}
@@ -62,11 +65,17 @@ class TodosListCtrl {
 				checked: !task.checked
 			},
 		});
+
+		// Set the checked property to the opposite of its current value
+		Meteor.call('tasks.setChecked', task._id, !task.checked);
 	}
 
 	// removeTask
 	removeTask(task) {
 		Tasks.remove(task._id);
+
+		// remove task
+		Meteor.call('tasks.remove', task._id);
 	}
 }
 
